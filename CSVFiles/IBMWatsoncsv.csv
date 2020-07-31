@@ -1,0 +1,907 @@
+,Title,Categories,Tags,Replies,Post,Comment
+0,[README] Learn the Watson API,"Get Help,IBM Watson",,2,"
+Welcome to Learn the Watson API Pro
+
+Watson is a powerful question answering computer system built by IBM that is capable of answering questions posed in natural language. It is possible for anyone to harness the potential of IBM Watson through its API – this forum category covers broader discussion about IBM Watson related topics.
+This course contains the following Sections/Lessons:
+
+Introduction to Bluemix and Watson
+
+A Watson-Powered Application
+
+
+PIP: The Python Package Manager
+
+Using PIP
+
+
+Retrieving Content from Twitter
+
+Using the Twitter API
+
+
+Configuring Personality Insights
+
+Using the Personality Insights API
+
+
+Final Analysis
+
+Gaining Insights
+
+
+
+
+Topics in this course, By section:
+
+Introduction to Bluemix and Watson
+PIP: The Python Package Manager
+Retrieving Content from Twitter
+Configuring Personality Insights
+Final Analysis
+
+FAQ’s
+View all
+Q & A’s
+View all
+More resources from Codecademy
+Module Key Concepts
+
+Introduction to Bluemix and Watson
+PIP: The Python Package Manager
+Retrieving Content from Twitter
+Configuring Personality Insights
+Final Analysis
+
+Articles:
+
+coming soon
+
+","
+"
+1,"When saving a visualization figure into png on IBM Watson, where is it really saved?","Get Help,IBM Watson",retrieving-content,1,"
+I am preparing slides for my data visualization project on IBM Watson. When trying to save each figure into a png file, I use the following code:
+plt.savefig(“filename.png”)
+Where can I find now these png files? Where are they physically saved in the cloud?
+Many thanks in advance!
+",
+2,Analyzer is not working,"Get Help,IBM Watson",,1,"
+For a start, I can’t seem to navigate the IBM cloud to see the username and password in the credentials. When I create an instance I receive an api key and url.
+Either way I get the following message:
+TypeError: init() takes at least 2 arguments (3 given)
+was anyone able to run this code successfully?
+",
+3,Indentation Error,"Get Help,IBM Watson",,4,"
+Getting the following error in Exercise 7/8 in Lesson : Sorting and Outputting results.
+File “CelebrityMatch.py”, line 19
+text = “”
+^
+IndentationError: unindent does not match any outer indentation level
+","
+We will need a little more to go on besides just the error message. Please post a link to the exercise as well as your code.
+
+Hello,
+Thanks for replying.
+Link to exercise
+Code:
+import sys
+import operator
+import requests
+import json
+import twitter
+from watson_developer_cloud import PersonalityInsightsV2 as PersonalityInsights
+
+def analyze(handle):
+
+	twitter_consumer_key = ''  
+	twitter_consumer_secret = ''  
+	twitter_access_token = ''  
+	twitter_access_secret = ''
+
+	twitter_api = twitter.Api(consumer_key=twitter_consumer_key, consumer_secret=twitter_consumer_secret, access_token_key=twitter_access_token, access_token_secret=twitter_access_secret)
+
+	statuses = twitter_api.GetUserTimeline(screen_name=handle,count=200, include_rts=False)
+  text = ''
+  for status in statuses:
+    if (status.lang =='en'):
+      text += status.text.encode('utf-8')
+
+	#The IBM Bluemix credentials for Personality Insights!
+	pi_username = '08ead2a5-124a-4f29-972d-3f80fb60c62f'
+	pi_password = 'dOTPgPlPeJo4'
+
+	personality_insights = PersonalityInsights(username=pi_username, password=pi_password)
+	pi_result = personality_insights.profile(text)
+
+	return pi_result
+
+def flatten(orig):
+    data = {}
+    for c in orig['tree']['children']:
+        if 'children' in c:
+            for c2 in c['children']:
+                if 'children' in c2:
+                    for c3 in c2['children']:
+                        if 'children' in c3:
+                            for c4 in c3['children']:
+                                if (c4['category'] == 'personality'):
+                                    data[c4['id']] = c4['percentage']
+                                    if 'children' not in c3:
+                                        if (c3['category'] == 'personality'):
+                                                data[c3['id']] = c3['percentage']
+    return data
+  
+  
+  
+def compare(dict1, dict2):
+    compared_data = {}
+    for keys in dict1:
+        if dict1[keys] != dict2[keys]:
+                compared_data[keys]=abs(dict1[keys] - dict2[keys])
+    return compared_data 
+  
+  
+user_handle = ""@Codecademy""
+celebrity_handle = ""@IBM""
+
+user_result = analyze(user_handle)
+celebrity_result = analyze(celebrity_handle)  
+
+#First, flatten the results from the Watson PI API
+user = flatten(user_result)
+celebrity = flatten(celebrity_result)
+
+#Then, compare the results of the Watson PI API by calculating the distance between traits
+compared_results = compare(user,celebrity)
+
+
+sorted_result = sorted(compared_results.items(), key=operator.itemgetter(1))
+
+for keys, value in sorted_result[:5]:
+    print keys,
+    print(user[keys]),
+    print ('->'),
+    print (celebrity[keys]),
+    print ('->'),
+    print (compared_results[keys])
+
+
+sorted_result = sorted(compared_results.items(), key=operator.itemgetter(1))
+
+for keys, value in sorted_result[:5]:
+    print keys,
+    print(user[keys]),
+    print ('->'),
+    print (celebrity[keys]),
+    print ('->'),
+    print (compared_results[keys])
+
+
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+4,NameError: name 'handle' is not defined,"Get Help,IBM Watson",,2,"
+When I run the codes on “Sorting and Outputting the Results” getting this error and don’t know how to resolve this:
+Traceback (most recent call last):
+File “CelebrityMatch.py”, line 16, in 
+statuses = twitter_api.GetUserTimeline(screen_name=handle, count=200, include_rts=False)
+NameError: name ‘handle’ is not defined
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+5,Ascii' codec can't encode character u'\u2019' in position 1: ordinal not in range(128),"Get Help,IBM Watson",,3,"
+Hi, got this strange error in “Understanding Twitter Results II”:
+@omgleil find Harlem bad tweets about Nicki and get him out of here!
+Barbies reporting their own kind… WOW.
+THEY GOT OUR FAVORITE ■■■■■ WOW https://t.co/asBB1znonc
+@TheShawnyboy HAPPY BIRTHDAY ■■■■■, WHEN I COME TO MEMPHIS WE GETTING LIT?
+@IGoByAlice WHAT DID HE DONJEJKWWISIA
+Traceback (most recent call last):
+File “CelebrityMatch.py”, line 20, in 
+print status.text
+UnicodeEncodeError: ‘ascii’ codec can’t encode character u’\u2019’ in position 1: ordinal not in range(128)
+
+Code:
+import sys
+import operator
+import requests
+import json
+import twitter
+from watson_developer_cloud import PersonalityInsightsV2 as PersonalityInsights
+twitter_consumer_key =
+twitter_consumer_secret =
+twitter_access_token =
+twitter_access_secret =
+twitter_api = twitter.Api(consumer_key=twitter_consumer_key, consumer_secret=twitter_consumer_secret, access_token_key=twitter_access_token, access_token_secret=twitter_access_secret)
+handle = “@badgalriri”
+statuses = twitter_api.GetUserTimeline(screen_name=handle, count=200, include_rts=False)
+for status in statuses:
+print status.text
+","
+Try this.
+for status in statuses:
+print status.text.encode(“utf-8”)
+python2.7 unicode handling 
+
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+6,Error: name 'operator' is not defined,"Get Help,IBM Watson",,2,"
+Hi,
+I am receiving the following error:
+Traceback (most recent call last):
+File “CelebrityMatch.py”, line 70, in 
+sorted_result = sorted(compared_results.items(), key=operator.itemgetter(1))
+NameError: name ‘operator’ is not defined
+Please help.
+Here is my code without the twitter and PI credentials:
+def analyze(handle):
+import sys
+import operator
+import requests
+import json
+import twitter
+from watson_developer_cloud import PersonalityInsightsV2 as PersonalityInsights
+twitter_consumer_key = ''
+twitter_consumer_secret = ''
+twitter_access_token = ''
+twitter_access_secret = ''
+
+twitter_api=twitter.Api(consumer_key=twitter_consumer_key,
+                         consumer_secret=twitter_consumer_secret,
+                         access_token_key=twitter_access_token,
+                         access_token_secret=twitter_access_secret)
+
+statuses = twitter_api.GetUserTimeline(screen_name=handle, count=200, include_rts=False)
+
+text = """"
+
+for status in statuses: 
+  if (status.lang == 'en'):
+    text += status.text.encode('utf-8')
+
+#The IBM Bluemix credentials for Personality Insights
+pi_username = ''
+pi_password = ''
+
+personality_insights = PersonalityInsights(username=pi_username, password=pi_password)
+
+pi_result = personality_insights.profile(text)
+return pi_result
+
+def flatten(orig):
+data = {}
+for c in orig[‘tree’][‘children’]:
+if ‘children’ in c:
+for c2 in c[‘children’]:
+if ‘children’ in c2:
+for c3 in c2[‘children’]:
+if ‘children’ in c3:
+for c4 in c3[‘children’]:
+if (c4[‘category’] == ‘personality’):
+data[c4[‘id’]] = c4[‘percentage’]
+if ‘children’ not in c3:
+if (c3[‘category’] == ‘personality’):
+data[c3[‘id’]] = c3[‘percentage’]
+return data
+def compare(dict1, dict2):
+compared_data = {}
+for keys in dict1:
+if dict1[keys] != dict2[keys]:
+compared_data[keys]=abs(dict1[keys] - dict2[keys])
+return compared_data
+user_handle= “@SeFranzi”
+celebrity_handle= “@IBM”
+user_result = analyze(user_handle)
+celebrity_result = analyze(celebrity_handle)
+user= flatten(user_result)
+celebrity= flatten(celebrity_result)
+compared_results= compare(user, celebrity)
+sorted_result = sorted(compared_results.items(), key=operator.itemgetter(1))
+for keys, value in sorted_result[:5]:
+print keys,
+print(user[keys]),
+print (’->’),
+print (celebrity[keys]),
+print (’->’),
+print (compared_results[keys])
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+7,I have got an error on exercise 7/8,"Get Help,IBM Watson",,2,"
+I have done everything as told but I get error something like this,
+watson_developer_cloud.watson_developer_cloud_service.WatsonException: Unauthorized: Access is denied due to invalid credentials
+I checked all my credentials, and it is correct. Please help!
+If you want to check my code,
+import sys
+import operator
+import requests
+import json
+import twitter
+from watson_developer_cloud import PersonalityInsightsV2 as PersonalityInsights
+
+def analyze(handle):
+    twitter_consumer_key = 'bpX1ANOf58u8NVgRvQXdzXU4N'
+    twitter_consumer_secret = '7Vvw6AHd8xwRLOVPF2OuX3IoTp8fSv5IVxvTdFjerC4aYlZ5wy'
+    twitter_access_token = '882381265-zCXkJtzHpzATrjecdlX3F5NNpT6pNeKbfWrXzyxf'
+    twitter_access_secret = 'TNJy7sKDkCxJKIulZonNgmT6Hfa1mKpPzVfM0AirBTz1f'
+
+    twitter_api = twitter.Api(consumer_key = twitter_consumer_key, 
+                            consumer_secret =         twitter_consumer_secret,
+                            access_token_key = twitter_access_token,
+                            access_token_secret = twitter_access_secret)
+
+    #handle = ""@tim_cook""
+    statuses = twitter_api.GetUserTimeline(screen_name = handle, count = 200, include_rts = False)
+
+    text = """"
+    for status in statuses:
+        if(status.lang == 'en'):
+            text += status.text.encode('utf-8')
+        
+    # IBM Watson Personality Insights credentials...
+    pi_username = 'd8527f4c-031e-4723-92b3-a4a4a3853d91'
+    pi_password = 'idtW2FZ6ksRY'
+
+    personality_insights = PersonalityInsights(username = pi_username,
+                                           password = pi_password)
+    pi_result = personality_insights.profile(text)
+
+    return pi_result
+
+def flatten(orig):
+    data = {}
+    for c in orig['tree']['children']:
+        if 'children' in c:
+            for c2 in c['children']:
+                if 'children' in c2:
+                    for c3 in c2['children']:
+                        if 'children' in c3:
+                            for c4 in c3['childen']:
+                                if (c4['category'] == 'personality'):
+                                    data[c4['id']] = c4['percentage']
+                                    if 'children' not in c3:
+                                        if (c3['category'] == 'personality'):
+                                            data[c3['id']] == c3['percentage']
+                                            return data
+def compare(dict1, dict2):
+    compared_data = {}
+    for keys in dict1:
+        if dict1[keys] != dict2[keys]:
+            compared_data[keys] = abs(dict1[keys] -
+                                     dict2[keys])
+            return data
+          
+user_handle = ""@tim_cook""
+celebrity_handle = ""@pschiller""
+
+user_result = analyze(user_handle)
+celebrity_result = analyze(celebrity_handle)
+
+user = flatten(user_result)
+celebrity = flatten(celebrity_result)
+
+compared_results = compare(user, celebrity)
+
+sorted_result = sorted(compared_results.items(), key=operator.itemgetter(1))
+
+for keys, value in sorted_result[:5]:
+    print (keys),
+    print(user[keys]),
+    print ('->'),
+    print (celebrity[keys]),
+    print ('->'),
+    print (compared_results[keys])
+
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+8,Understanding Twitter Results 1,"Get Help,IBM Watson",,2,"
+Traceback (most recent call last):
+File “CelebrityMatch.py”, line 20, in 
+statuses = twitter_api.GetUserTimeline(screen_name = handle, count = 200, include_rts = False)
+File “/usr/local/lib/python2.7/dist-packages/twitter/api.py”, line 799, in GetUserTimeline
+data = self._ParseAndCheckTwitter(resp.content.decode(‘utf-8’))
+File “/usr/local/lib/python2.7/dist-packages/twitter/api.py”, line 4894, in _ParseAndCheckTwitter
+self._CheckForTwitterError(data)
+File “/usr/local/lib/python2.7/dist-packages/twitter/api.py”, line 4914, in _CheckForTwitterError
+raise TwitterError(data[‘errors’])
+twitter.error.TwitterError: [{u’message’: u’Could not authenticate you.’, u’code’: 32}]
+Error occurring while  running my code
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+9,7. Sorting and Outputting the Results,"Get Help,IBM Watson",,3,"
+I have passed this course but I keep getting an error, I would like to see this course through. Can anyone help me identify what I’ve done wrong in the code?
+https://www.codecademy.com/en/courses/ibm-watson/lessons/pi-insights/exercises/display
+import sys
+import operator
+import requests
+import json
+import twitter
+from watson_developer_cloud import PersonalityInsightsV2 as PersonalityInsights
+def analyze(handle):
+twitter_consumer_key = '*****'
+twitter_consumer_secret = '******'
+twitter_access_token = '*******''
+twitter_access_secret = '*****'
+
+twitter_api = twitter.Api(consumer_key=twitter_consumer_key,
+              consumer_secret=twitter_consumer_secret,
+              access_token_key=twitter_access_token,
+              access_token_secret=twitter_access_secret)
+
+
+statuses = twitter_api.GetUserTimeline(screen_name=handle, count=200, include_rts=False)
+
+text = “”
+for s in statuses:
+if (s.lang ==‘en’):
+text += s.text.encode(‘utf-8’)
+pi_username = ‘:@hotmail.com’
+pi_password = '*’
+personality_insights = PersonalityInsights(username=pi_username, password=pi_password)
+pi_result = personality_insights.profile(text)
+return pi_result
+
+def flatten(orig):
+data = {}
+for c in orig[‘tree’][‘children’]:
+if ‘children’ in c:
+for c2 in c[‘children’]:
+if ‘children’ in c2:
+for c3 in c2[‘children’]:
+if ‘children’ in c3:
+for c4 in c3[‘children’]:
+if (c4[‘category’] == ‘personality’):
+data[c4[‘id’]] = c4[‘percentage’]
+if ‘children’ not in c3:
+if (c3[‘category’] == ‘personality’):
+data[c3[‘id’]] = c3[‘percentage’]
+return data
+def compare(dict1, dict2):
+compared_data = {}
+for keys in dict1:
+if dict1[keys] != dict2[keys]:
+compared_data[keys] = abs(dict1[keys] - dict2[keys])
+return compared_data
+user_handle = “@Codecademy”
+celebrity_handle = “@IBM”
+user_result = analyze(user_handle)
+celebrity_result = analyze(celebrity_handle)
+user = flatten(user_result)
+celebrity = flatten(celebrity_result)
+compared_results = compare(user,celebrity)
+sorted_result = sorted(compared_results.items(), key=operator.itemgetter(1))
+for keys, value in sorted_result[:5]:
+print keys,
+print(user[keys]),
+print (’->’),
+print (celebrity[keys]),
+print (’->’),
+print (compared_results[keys])
+","
+I also get a non-result at the end of the course.
+“Line 61    print (compared_results[keys])” returns below “Error: The number of words 57 is less than the minimum number of words required for analysis: 100, Code: 400”
+Comparing different pairs of celebrities, e.g., {@scars008 ∩ @halleberry} returns the same error of “number of words 57 is less than the minimum”
+So I reported a bug, on the basis the compare analysis seems to run, albeit not meeting with success. Anyway the error pasted in full:
+Traceback (most recent call last):
+File “CelebrityMatch.py”, line 41, in 
+pi_result=personality_insights.profile(text)
+File “/usr/local/lib/python2.7/dist-packages/watson_developer_cloud/personality_insights_v2.py”, line 61, in profile
+headers=headers)
+File “/usr/local/lib/python2.7/dist-packages/watson_developer_cloud/watson_developer_cloud_service.py”, line 324, in request
+raise WatsonException(error_message)
+watson_developer_cloud.watson_developer_cloud_service.WatsonException: Error: The number of words 57 is less than the minimum number of words required for analysis: 100, Code: 400
+
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+10,Twitter API Not accepting my credentials,"Get Help,IBM Watson",,2,"
+Every time I try running my code, I get an error that I’m not authorized to use this API.
+Traceback (most recent call last):
+  File ""CelebrityMatch.py"", line 16, in <module>
+    statuses = twitter_api.GetUserTimeline(screen_name=handle, count=200, include_rts=False)
+  File ""/usr/local/lib/python2.7/dist-packages/twitter/api.py"", line 799, in GetUserTimeline
+    data = self._ParseAndCheckTwitter(resp.content.decode('utf-8'))
+  File ""/usr/local/lib/python2.7/dist-packages/twitter/api.py"", line 4894, in _ParseAndCheckTwitter
+    self._CheckForTwitterError(data)
+  File ""/usr/local/lib/python2.7/dist-packages/twitter/api.py"", line 4914, in _CheckForTwitterError
+    raise TwitterError(data['errors'])
+twitter.error.TwitterError: [{u'message': u'Could not authenticate you.', u'code': 32}]
+
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+11,Nothing happing on Personality Insights,"Get Help,IBM Watson",,2,"
+Hello guys!
+I finished the activities and the I didn’t received the output , instead I received the following error:
+Traceback (most recent call last):
+File “CelebrityMatch.py”, line 65, in 
+user_result = analyze(user_handle)
+File “CelebrityMatch.py”, line 38, in analyze
+pi_result = personality_insights.profile(text)
+File “/usr/local/lib/python2.7/dist-packages/watson_developer_cloud/personality_insights_v2.py”, line 61, in profile
+headers=headers)
+File “/usr/local/lib/python2.7/dist-packages/watson_developer_cloud/watson_developer_cloud_service.py”, line 320, in request
+raise WatsonException(error_message)
+watson_developer_cloud.watson_developer_cloud_service.WatsonException: Error: No text provided, Code: 400
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+12,No results for Watson Twitter API,"Get Help,IBM Watson",,2,"
+Nothing, just spins, no results or error messages.
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+13,The terminal shows nothing,"Get Help,IBM Watson",,2,"
+I got to the end of the Watson PI but the terminal isn’t printing anything.
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+14,The terminal shows nothing,"Get Help,IBM Watson",,2,"
+I have reached till the end but the terminal appears blank with no result shown on how the handles are similar
+i have even tried in different browsers
+import sys
+import operator
+import requests
+import json
+import twitter
+from watson_developer_cloud import 
+PersonalityInsightsV2 as 
+PersonalityInsights
+
+twitter_consumer_key = '*******************'
+twitter_consumer_secret = '****************'
+twitter_access_token = '******************'
+twitter_access_secret = '************'
+
+twitter_api = twitter.Api(consumer_key=twitter_consumer_key, consumer_secret=twitter_consumer_secret, access_token_key=twitter_access_token, access_token_secret=twitter_access_secret)
+
+
+statuses = twitter_api.GetUserTimeline(screen_name = handle , count= 200 , include_rts= False)
+
+text = """"
+
+for status in statuses:
+  if (status.lang == 'en'):
+    text+= status.text.encode('utf-8')
+    
+pi_username = '*************'
+pi_password = '**********'
+
+personality_insights = PersonalityInsights(username=pi_username, password=pi_password)
+def analyze(handle):
+	pi_result = personality_insights.profile(text)
+	return pi_result
+
+def flatten(orig):
+    data = {}
+    for c in orig['tree']['children']:
+        if 'children' in c:
+            for c2 in c['children']:
+                if 'children' in c2:
+                    for c3 in c2['children']:
+                        if 'children' in c3:
+                            for c4 in c3['children']:
+                                if (c4['category'] == 'personality'):
+                                    data[c4['id']] = c4['percentage']
+                                    if 'children' not in c3:
+                                        if (c3['category'] == 'personality'):
+                                                data[c3['id']] = c3['percentage']
+    return data
+  
+def compare(dict1, dict2):
+    compared_data = {}
+    for keys in dict1:
+        if dict1[keys] != dict2[keys]:
+                compared_data[keys]=abs(dict1[keys] - dict2[keys])
+    return compared_data 
+
+user_handle = ""@Codecademy""
+celebrity_handle = ""@IBM""  
+
+user_result = analyze(user_handle)
+celebrity_result = analyze(celebrity_handle)
+
+user = flatten(user_result)
+celebrity = flatten(celebrity_result)
+
+compared_results = compare(user,celebrity)
+
+sorted_result = sorted(compared_results.items(), key=operator.itemgetter(1))
+
+for keys, value in sorted_result[:5]:
+    print keys,
+    print(user[keys]),
+    print ('->'),
+    print (celebrity[keys]),
+    print ('->'),
+    print (compared_results[keys])
+
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+15,API Personality Insights,"Get Help,IBM Watson",,2,"
+4/4 It seems to be an error. it dose not do anything after entering credentials.
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+16,4/4 is loading indefinitely,"Get Help,IBM Watson",,3,"
+When I try to run the code in 4/4, it starts loading and never finishes - it’s loading indefinitely without any error message.  There was a similar post here where people solved this problem by using Internet Explorer instead of Chrome, however this does not work for me. I tried it with Internet Explorer, Firefox, Safari and Chrome, on Windows and Mac OS X, same result.
+","
+I have faced the same problem. Loading forever in step 4/4.
+
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+17,Can't convert 'bytes' object to str implicitly,"Get Help,IBM Watson",,2,"
+This is my code:
+for status in statuses:
+    if (status.lang =='en'):
+        text += status.text.encode('utf-8')
+
+When I run it in Python 3.5 I get this error:
+
+Can’t convert ‘bytes’ object to str implicitly
+
+Is there a way to fix this without using Python 2.7? Would really prefer to keep it in Python 3.5.
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+18,Sorting and Outputting the Results,"Get Help,IBM Watson",,2,"
+I have completed all the steps in the Learn the Watson API course. In the last step, after all the code in place when I run the program, it just keeps running for a long time without any result (no error message, nothing). Any idea why that might be happening? Appreciate your help.
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+19,Help with 4/4,"Get Help,IBM Watson",,6,"
+Having a bit of trouble with Learn the Watson API 4/4 - I’ve entered my PI credentials and the code won’t run properly, even after resetting the code and starting from scratch. I press “Run” and it seems to be continuously loading and not continuing to the next stage.
+Could anyone help?
+","
+Same with me.
+Anyone who can help?
+Codecademy members?
+
+Getting the same error here, just posting to keep thread open
+
+I switched to IE instead of Chrome, and was able to continue. I noticed the BlueMix website seems to load a bit faster in IE as well, maybe the API doesn’t work as well in non-IE browsers?
+
+thanks for the tip - I switched to IE and was able to run 4/4. Completed the lesson and ran immediately back to Chrome
+
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+20,TypeError: Can't convert 'bytes' object to str implicitly,"Get Help,IBM Watson",,3,"
+for status in statuses:
+    if status.lang =='en':
+      text += status.text.encode('utf-8')
+
+line 3 return error in my IDE. python 3.5
+TypeError: Can't convert 'bytes' object to str implicitly
+","
+Unicode handling differs quite a lot between python2 and python3, If that code is targetting python2 then you’re better off running it with a python2 interpreter.
+
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+21,Use the pip command to install,"Get Help,IBM Watson",,2,"
+Use PIP and the command line to install the required Twitter and Watson Developer Cloud Python packages.
+
+python-twitter
+watson-developer-cloud
+
+Receiving a continuous error message
+
+01989b2d3541e32715499779026942350118c6dd.png1281×620
+
+https://www.codecademy.com/en/courses/ibm-watson/lessons/using-pip/exercises/installing-packages?action=lesson_resume&link_content_target=interstitial_lesson
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+22,Celebrity Match Demo Not Working,"Get Help,IBM Watson",,5,"
+Hey all,
+I followed the instructions exactly (inputting my Twitter handle and Twitter API credentials), but the interface doesn’t seem to be working. I’ve clicked “Run” multiple times with no results shown in the right pane. Copying my code below. Is this just a bug with CodeAcademy??
+import sys
+import requests
+import json
+import operator
+import twitter
+import script as pi
+from watson_developer_cloud import PersonalityInsightsV2 as PersonalityInsights 
+
+#This function is used to receive and analyze
+#the last 200 tweets of a Twitter handle using
+#the Watson PI API
+def analyze(handle):
+
+	#The Twitter API credentials
+	twitter_consumer_key = 'XXXX'
+	twitter_consumer_secret = 'XXXX'
+	twitter_access_token = 'XXXX'
+	twitter_access_secret = 'XXXX'
+
+	#Invoking the Twitter API
+	twitter_api = twitter.Api(consumer_key=twitter_consumer_key,
+                  consumer_secret=twitter_consumer_secret,
+                  access_token_key=twitter_access_token,
+                  access_token_secret=twitter_access_secret)
+
+	#Retrieving the last 200 tweets from a user
+	statuses = twitter_api.GetUserTimeline(screen_name=handle, count=200, include_rts=False)
+
+	#Putting all 200 tweets into one large string called ""text""
+	text = """" 
+	for s in statuses:
+	    if (s.lang =='en'):
+    			text += s.text.encode('utf-8')
+
+	#Analyzing the 200 tweets with the Watson PI API
+	pi_result = PersonalityInsights(username=pi.u, password=pi.p).profile(text)
+
+	#Returning the Watson PI API results
+	return pi_result
+
+#This function is used to flatten the result 
+#from the Watson PI API
+def flatten(orig):
+    data = {}
+    for c in orig['tree']['children']:
+        if 'children' in c:
+            for c2 in c['children']:
+                if 'children' in c2:
+                    for c3 in c2['children']:
+                        if 'children' in c3:
+                            for c4 in c3['children']:
+                                if (c4['category'] == 'personality'):
+                                    data[c4['id']] = c4['percentage']
+                                    if 'children' not in c3:
+                                        if (c3['category'] == 'personality'):
+                                                data[c3['id']] = c3['percentage']
+    return data
+
+
+#This function is used to compare the results from
+#the Watson PI API
+def compare(dict1, dict2):
+	compared_data = {}
+	for keys in dict1:
+    		if dict1[keys] != dict2[keys]:
+			compared_data[keys] = abs(dict1[keys] - dict2[keys])
+	return compared_data
+
+
+#The two Twitter handles
+user_handle = ""@mattbrown8454""
+celebrity_handle = ""@IBM"" 
+
+#Analyze the user's tweets using the Watson PI API
+user_result = analyze(user_handle)
+celebrity_result = analyze(celebrity_handle)
+
+#Flatten the results received from the Watson PI API
+user = flatten(user_result)
+celebrity = flatten(celebrity_result)
+
+#Compare the results of the Watson PI API by calculating
+#the distance between traits
+compared_results = compare(user,celebrity)
+
+#Sort the results
+sorted_results = sorted(compared_results.items(), key=operator.itemgetter(1))
+
+#Print the results to the user
+for keys, value in sorted_results[:5]:
+	print keys ,
+	print (user[keys]),
+	print ('->'),
+	print (celebrity[keys]),
+	print ('->'),
+	print (compared_results[keys])
+
+
+","
+
+Don’t post your API credentials, they should be kept private.
+It’s a codecademy problem.
+
+
+Did it get solved for you? I am having the same problem
+
+Never got solved for me. I’m a Pro member so I broached the topic with their Customer Support Live Chat… they said they would add it to their bug list.
+In any case, I just kept moving through the other lessons which 90% of the time worked well. I really like this course actually. IBM Watson’s services are really mind-blowing, and the instructions here in CodeAcademy are very simple and intuitive.
+
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+23,When entering PI api credentials codeacademy is showing error messag,"Get Help,IBM Watson",,3,"
+I logged in on bluemix and initiated an instance for personality insight. Whenever I am entering those credentials, codeacademy is showing error- “Ensure you have added your own credentials for the Personality Insight service.”
+I have make sure that credentials are correct. I am stuck on stage 4/4. Please help.
+Regards,
+Abhishek
+","
+I’ve got the exact same problem.
+
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+24,Node reply script for twitter does not actually reply,"Get Help,IBM Watson",,2,"
+This twitter script can currently tweet the selected user once they tweet, but instead of actually replying underneath the tweet, it tweets it as a standalone new tweet. How can I get it to actually reply instead of make a new tweet? I’m using Twit API: https://github.com/ttezel/twit
+Here’s what I have:
+    console.log('The bot is starting');
+
+var Twit = require('twit');
+
+var config = require('./config');
+var T = new Twit(config);
+
+//Setting up a user stream
+var stream = T.stream('user');
+
+stream.on('tweet', tweetEvent);
+
+function tweetEvent(eventMsg) {
+
+   var replyto = eventMsg.user.screen_name;
+   var text = eventMsg.text;
+   var from = eventMsg.user.screen_name;
+
+   console.log(replyto + ' '+ from);
+
+   if (replyto =='other user's handle') {
+    var newtweet = '@' + from + ' Hello!';
+    tweetIt(newtweet);
+   }
+
+}
+
+function tweetIt(txt) {
+
+    var tweet = {
+     status: txt
+     }
+
+    T.post('statuses/update', tweet, tweeted);
+
+    function tweeted(err, data, response) {
+      if (err) {
+        console.log(""Something went wrong!"");
+      } else {
+        console.log(""It worked!"");
+      }
+    }
+}
+
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+25,Twitter methods,"Get Help,IBM Watson",,5,"
+I’m in the Twitter Querying II Section and I was curious about the method being used twitter_api.GetUserTimeline. I searched GetUserTimeline in Twitter’s development site. https://dev.twitter.com/rest/reference/get/statuses/user_timeline
+There are a few other parameters for this that Codecademy doesn’t have us input. I’m assuming if I wanted to use any other methods I would search in here. But how would I know which parameters are vital? At first glance I would think all are necessary.
+","
+Here -> https://dev.twitter.com/rest/reference/get/statuses/user_timeline in the parameters section all optional parameters have a grey optional label and required parameters have required label.
+
+Wow I can’t believe I missed that, thanks! Funny how like all of them are optional 
+
+You’re very welcome!
+It depends on the method  In some cases, you have to pay attention to the extra notes, like here:
+
+Always specify either an user_id or screen_name when requesting a user timeline.
+
+So they both are optional, but you have to specify one of them 
+
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+26,Hitting an error (event with the sample code) - 'Api' object has no attribute '_Api__auth',"Get Help,IBM Watson",,2,"
+Hi there, im running through the Learn the Watson API and am on step 7.
+However, even when i use the sample code provided i see this error on the right…
+Traceback (most recent call last):
+File “CelebrityMatch.py”, line 17, in 
+statuses = twitter_api.GetUserTimeline(screen_name=handle, count=200, include_rts=False)
+File “/usr/local/lib/python2.7/dist-packages/twitter/api.py”, line 628, in GetUserTimeline
+json = self._RequestUrl(url, ‘GET’, data=parameters)
+File “/usr/local/lib/python2.7/dist-packages/twitter/api.py”, line 3601, in _RequestUrl
+auth=self.__auth,
+AttributeError: ‘Api’ object has no attribute ‘_Api__auth’
+Google suggests there may be a conflict between packages Twitter and Python_twitter - however i dont see the twitter package installed with i do ‘pip freeze’
+any thoughts?
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
+27,Watson PIP,"Get Help,IBM Watson",,2,"
+I am learning this but i actually don’t know that how could I am able to use in my app …
+that’s basically how to use and where to … 
+","
+This topic was automatically closed 7 days after the last reply. New replies are no longer allowed.
+"
